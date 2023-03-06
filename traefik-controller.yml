@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.9
+    # Enables the web UI and tells Traefik to listen to docker
+    container_name: traefik
+    command:
+      - --api.insecure=true
+      - --api.dashboard=true
+      - --providers.docker
+      - --entrypoints.front-end.address=:8079
+      - --entrypoints.catalogue.address=:80
+      - --entrypoints.catalogue-db.address=:3306
+      - --entrypoints.carts-db.address=:27017
+      - --entrypoints.user-simulator.address=:8089
+      - --entrypoints.rabbitmq.address=:4369
+      - --entrypoints.rabbitmq.address=:5671
+      - --entrypoints.rabbitmq.address=:5672
+      - --entrypoints.rabbitmq.address=:25672
+      - --entrypoints.orders.address=:86
+      - --entrypoints.orders-db=:27018
+      - --entrypoints.shipping.address=:81
+      - --entrypoints.user-simulator=:8089
+      - --entrypoints.user-db.address=:27019
+      - --entrypoints.user=:83
+    ports:
+      - '80:80'
+      # The Web UI (enabled by --api.insecure=true)
+      - '8080:8080'
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    read_only: true
+    tmpfs:
+      - /var/run:rw,noexec,nosuid
+    restart: always

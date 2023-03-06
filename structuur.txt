@@ -1,0 +1,24 @@
+
+
+Ubuntu Desktop: nieuwe dir deploy aanmaken in de homefolder, en daarin 3 sub dirs maken: bestattempt, olddeploy, newdeploy. yml files volgens onderstaande structuur:
+
+home/student/deploy
+	   	  |/bestattempt
+	               |traefik-controller.yml
+	    	  |/olddeploy
+	   	      |sock shop repo
+	   	  |/newdeploy
+	   	      |traefik-deploy.yml
+
+
+op server1 t/m 4 in de homefolder (student@ubuntu:~)
+server<nummer>.yml
+server-edge.yml
+
+uiteindelijk bijv:
+
+server1:
+
+/home/student/
+	    |server1.yml
+	    |server1-egde.yml
